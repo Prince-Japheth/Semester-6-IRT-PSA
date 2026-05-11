@@ -36,8 +36,6 @@ I architected a simulated staging environment to build a Router-on-a-Stick topol
 #### A. Physical Topology
 The staging environment consists of a 2911 Router connected to a 2960 Switch via a Gigabit link. Two endpoint PCs are assigned to distinct VLANs (VLAN 10 and VLAN 20) to mirror a departmental structure in a virtualized sandbox.
 
-![Connected Topology](assets/integrated_server_topology_and_pc0_web_browser_showing_successful_load.png)
-
 #### B. Layer 2 Switch Configuration
 I established the VLAN database and configured the trunking port to allow tagged traffic across the single physical link in the staging setup.
 
@@ -61,8 +59,6 @@ interface g0/1
 end
 ```
 
-![Switch CLI Configuration](assets/switch_cli_executing_vlan_and_trunk_commands.png)
-
 #### C. Layer 3 Router Configuration
 I enabled the physical interface and created logical subinterfaces for each VLAN gateway, applying the 802.1Q encapsulation protocol to validate the routing logic.
 
@@ -81,8 +77,6 @@ interface g0/0.20
   ip address 192.168.20.1 255.255.255.0
 end
 ```
-
-![Router CLI Configuration](assets/router_cli_configuringuration.png)
 
 #### D. Service Delivery Layer: Web Hosting Integration
 To simulate a real-world enterprise environment, I integrated a dedicated web server behind the router on a separate subnet (10.0.0.0/24). I configured the router's G0/1 interface as the gateway and hosted a custom HTML landing page to provide visual confirmation of end-to-end service delivery.
