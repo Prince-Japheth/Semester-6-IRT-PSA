@@ -1,42 +1,28 @@
 # Pre-Deployment Validation of VLAN Inter-Routing Architecture
 
-This repository contains the source files and technical documentation for the **MainOne Technical Services** network staging project. The goal of this project was to architect and validate a **Router-on-a-Stick (RoAS)** topology to ensure secure inter-VLAN communication before physical deployment.
+This repository contains the source files and technical documentation for the **State House Presidential Villa 24 PMF Prescort** network staging project. The goal of this project was to architect and validate a **Router-on-a-Stick (RoAS)** topology to ensure secure inter-VLAN communication before physical deployment.
 
-**Repository Description**: A comprehensive network staging project validating a Router-on-a-Stick (RoAS) architecture with 802.1Q trunking and inter-VLAN routing for MainOne Technical Services.
-
----
-
-## 1. Project Overview
-
-### Organization
-MainOne Technical Services
-
-### Skill Outcome
-Mastered VLAN Inter-routing and Router-on-a-Stick (RoAS) configuration by designing, simulating, and validating a functional network architecture in a virtualized staging environment. This involved the architectural design of a segmented network and the configuration of logical subinterfaces on a Cisco 2911 Router using 802.1Q encapsulation to facilitate inter-departmental communication.
+**Repository Description**: A comprehensive network staging project validating a Router-on-a-Stick (RoAS) architecture with 802.1Q trunking and inter-VLAN routing for State House Presidential Villa 24 PMF Prescort.
 
 ---
 
-## 2. Situation Analysis
+## Key Features
 
-### Problem Statement
-The organization needed a reliable way to test and validate a segmented network architecture to resolve broadcast storms and cross-VLAN interference before committing to a physical hardware deployment.
-
-### Problem Effect
-Without a virtual proof of concept, deploying untested routing configurations directly to the live environment risked introducing high latency, misconfigured default gateways, and unacceptable network downtime for end-users, which would severely disrupt business operations.
+*   **Network Segmentation**: Logical separation of departments using **VLAN 10** and **VLAN 20**.
+*   **Inter-VLAN Routing**: Implementation of **802.1Q encapsulation** on logical subinterfaces.
+*   **Service Integration**: A functional web server subnet to validate end-to-end Application Layer delivery.
+*   **Deep Packet Inspection**: Verified 802.1Q tagging through PDU simulation analysis.
 
 ---
 
-## 3. The Solution & Implementation
-
-### Proposed Solution
-I architected a simulated staging environment to build a Router-on-a-Stick topology, successfully configuring logical subinterfaces (G0/0.10 and G0/0.20) and validating seamless routing via an 802.1Q trunk link to ensure all endpoints had fully functional communication paths.
-
-### Implementation Steps
-
-#### A. Physical Topology
+## Physical Topology
 The staging environment consists of a 2911 Router connected to a 2960 Switch via a Gigabit link. Two endpoint PCs are assigned to distinct VLANs (VLAN 10 and VLAN 20) to mirror a departmental structure in a virtualized sandbox.
 
-#### B. Layer 2 Switch Configuration
+---
+
+## Technical Implementation
+
+### Layer 2 Switch Configuration
 I established the VLAN database and configured the trunking port to allow tagged traffic across the single physical link in the staging setup.
 
 ```text
@@ -61,7 +47,7 @@ end
 
 ![Switch CLI Configuration](assets/switch_cli_executing_vlan_and_trunk_commands.png)
 
-#### C. Layer 3 Router Configuration
+### Layer 3 Router Configuration
 I enabled the physical interface and created logical subinterfaces for each VLAN gateway, applying the 802.1Q encapsulation protocol to validate the routing logic.
 
 ```text
@@ -82,32 +68,24 @@ end
 
 ![Router CLI Configuration](assets/router_cli_configuringuration.png)
 
-#### D. Service Delivery Layer: Web Hosting Integration
+### Service Delivery Layer: Web Hosting Integration
 To simulate a real-world enterprise environment, I integrated a dedicated web server behind the router on a separate subnet (10.0.0.0/24). I configured the router's G0/1 interface as the gateway and hosted a custom HTML landing page to provide visual confirmation of end-to-end service delivery.
 
 ![Web Server Integration](assets/integrated_server_topology_and_pc0_web_browser_showing_successful_load.png)
 
 ---
 
-## 4. Validation and Technical Verification
+## Validation and Technical Verification
 
 ### Cross-Network Connectivity Test
 I performed an ICMP validation (ping) from PC0 (VLAN 10) to PC1 (VLAN 20). The successful reply confirms that the Router-on-a-Stick setup is correctly forwarding traffic between isolated subnets.
 
 ![Ping Validation](assets/successful_ping_from_pc0_to_pc1.png)
 
-**Technical Analysis:**
-*   **L3 Hop Verification (TTL=127)**: The reduction of the TTL value from the default 128 confirms that the packet was successfully routed through the Layer 3 sub-interface.
-*   **Protocol Convergence (ARP)**: The initial request timeout demonstrates the standard ARP resolution process occurring across the 802.1Q trunk as the router and switch synchronize destination MAC addresses.
-
 ### Routing Table Analysis
-The router's RIB (Routing Information Base) was audited using `show ip route`. The resulting table confirms that both VLAN sub-interfaces are in an 'up/up' state and are recognized as directly connected networks, verifying the internal routing logic.
-
 ![IP Routing Table Verification](assets/ip_route_command_for_confirmation.png)
 
 ### Trunking and Encapsulation Verification
-Structural integrity of the Layer 2 trunk was verified using `show interfaces trunk`. This audit confirms the port is successfully negotiating 802.1Q encapsulation and is actively forwarding traffic for the designated departmental VLANs.
-
 ![Trunk Interface Verification](assets/switch_show_interfaces_trunk_table.png)
 
 ### Deep Packet Inspection (802.1Q Tagging)
@@ -116,6 +94,13 @@ Verification was conducted in simulation mode to ensure frame tagging was occurr
 ![802.1Q PDU Analysis](assets/pdu_details_showing_802.1q_tag_and_vlan_id.png)
 ![802.1Q PDU Analysis Detail](assets/pdu_details_showing_802.1q_tag_and_vlan_id2.png)
 
+---
+
+## How to View the Project
+
+1.  **Download the Lab**: Download the `.pkt` file and open it in **Cisco Packet Tracer (v8.2 or higher)**.
+2.  **Run the Simulation**: Enter **Simulation Mode** and observe the ICMP traffic crossing the trunk link.
+3.  **Check the Web Server**: Open the Web Browser on **PC0** and navigate to [http://10.0.0.10](http://10.0.0.10) to see the custom staging site.
 
 ---
 
