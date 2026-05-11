@@ -62,7 +62,6 @@ end
 ```
 
 ![Switch CLI Configuration](assets/switch_cli_executing_vlan_and_trunk_commands.png)
-![Trunk Interface Verification](assets/switch_show_interfaces_trunk_table.png)
 
 #### C. Layer 3 Router Configuration
 I enabled the physical interface and created logical subinterfaces for each VLAN gateway, applying the 802.1Q encapsulation protocol to validate the routing logic.
@@ -84,7 +83,6 @@ end
 ```
 
 ![Router CLI Configuration](assets/router_cli_configuringuration.png)
-![IP Routing Table Verification](assets/ip_route_command_for_confirmation.png)
 
 #### D. Service Delivery Layer: Web Hosting Integration
 To simulate a real-world enterprise environment, I integrated a dedicated web server behind the router on a separate subnet (10.0.0.0/24). I configured the router's G0/1 interface as the gateway and hosted a custom HTML landing page to provide visual confirmation of end-to-end service delivery.
@@ -100,10 +98,26 @@ I performed an ICMP validation (ping) from PC0 (VLAN 10) to PC1 (VLAN 20). The s
 
 ![Ping Validation](assets/successful_ping_from_pc0_to_pc1.png)
 
+**Technical Analysis:**
+*   **L3 Hop Verification (TTL=127)**: The reduction of the TTL value from the default 128 confirms that the packet was successfully routed through the Layer 3 sub-interface.
+*   **Protocol Convergence (ARP)**: The initial request timeout demonstrates the standard ARP resolution process occurring across the 802.1Q trunk as the router and switch synchronize destination MAC addresses.
+
+### Routing Table Analysis
+The router's RIB (Routing Information Base) was audited using `show ip route`. The resulting table confirms that both VLAN sub-interfaces are in an 'up/up' state and are recognized as directly connected networks, verifying the internal routing logic.
+
+![IP Routing Table Verification](assets/ip_route_command_for_confirmation.png)
+
+### Trunking and Encapsulation Verification
+Structural integrity of the Layer 2 trunk was verified using `show interfaces trunk`. This audit confirms the port is successfully negotiating 802.1Q encapsulation and is actively forwarding traffic for the designated departmental VLANs.
+
+![Trunk Interface Verification](assets/switch_show_interfaces_trunk_table.png)
+
 ### Deep Packet Inspection (802.1Q Tagging)
 Verification was conducted in simulation mode to ensure frame tagging was occurring at the trunk interface. The PDU analysis explicitly shows the 802.1Q header and the VLAN ID (TCI) for the respective departmental traffic.
 
 ![802.1Q PDU Analysis](assets/pdu_details_showing_802.1q_tag_and_vlan_id.png)
+![802.1Q PDU Analysis Detail](assets/pdu_details_showing_802.1q_tag_and_vlan_id2.png)
+
 
 ---
 
